@@ -1,8 +1,10 @@
 package com.endava.springrestapi.controller;
 
+import com.endava.springrestapi.exception.ResourceNotFoundException;
 import com.endava.springrestapi.model.User;
 import com.endava.springrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +36,10 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User userDetails) {
        return  userService.update(id, userDetails);
     }
-
+    @RequestMapping(value = ":id={id}",method = RequestMethod.DELETE)
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id ){
+        return userService.delete(id);
+    }
 
 }
 
