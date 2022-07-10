@@ -1,9 +1,8 @@
 package com.endava.springrestapi.service;
 
-import com.endava.springrestapi.repository.UserRepository;
 import com.endava.springrestapi.exception.ResourceNotFoundException;
 import com.endava.springrestapi.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.endava.springrestapi.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,46 +13,67 @@ import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-    private  PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public User create(User user){
-        String encodedPassword=this.passwordEncoder.encode(user.getUserAccountPassword());
+    public User create(User user) {
+        String encodedPassword = this.passwordEncoder.encode(user.getUserAccountPassword());
         user.setUserAccountPassword(encodedPassword);
-        return userRepository.save(user);
+        userRepository.save(user);
+        return removePassword(user);
     }
 
 
-    public List<User> getAll(){
-        return userRepository.findAll();
+    public List<User> getAll() {
+        return removePasswordsFromList(userRepository.findAll());
     }
 
-    public ResponseEntity<User> findById(int id){
-        User user= userRepository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("User not exist with id="+id));
-        return ResponseEntity.ok(user);
+
+    public ResponseEntity<User> findById(int id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id=" + id));
+        user.setUserAccountPassword(" ");
+        return ResponseEntity.ok(removePassword(user));
     }
-    public ResponseEntity<User> update(int id,User userDetails){
-        User userUpdate=userRepository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("User not exist with id="+id));
+
+    public ResponseEntity<User> update(int id, User userDetails) {
+        String encodedPassword = this.passwordEncoder.encode(userDetails.getUserAccountPassword());
+
+        User userUpdate = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id=" + id));
         userUpdate.setUserName(userDetails.getUserName());
         userUpdate.setUserAddress(userDetails.getUserAddress());
         userUpdate.setUserAccountLogin(userDetails.getUserAccountLogin());
-        userUpdate.setUserAccountPassword(userDetails.getUserAccountPassword());
+        userUpdate.setUserAccountPassword(encodedPassword);
         userUpdate.setUserAccountEmail(userDetails.getUserAccountEmail());
         userRepository.save(userUpdate);
-        return ResponseEntity.ok(userUpdate);
+        return ResponseEntity.ok(removePassword(userUpdate));
     }
-    public ResponseEntity<HttpStatus> delete(int id ){
-        User user=userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not exist with id="+id));
+
+    public ResponseEntity<HttpStatus> delete(int id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id=" + id));
         userRepository.delete(user);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    public List<User> removePasswordsFromList(List<User> users) {
+        return users
+                .stream()
+                .peek(user -> user.setUserAccountPassword("---"))
+                .toList();
+    }
+
+    public User removePassword(User user) {
+        user.setUserAccountPassword("---");
+        return user;
+    }
+
 }
+
+

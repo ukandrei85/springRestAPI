@@ -11,19 +11,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="books")
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="book_title",nullable = false)
+    @Column(name = "book_title", nullable = false)
     private String title;
-    @Column(name="book_isbn",nullable = false)
+    @Column(name = "book_isbn", nullable = false)
     private long isbn;
-    @Column(name="book_owner",nullable = false)
+    @Column(name = "book_owner", nullable = false)
     private String owner;
-    @Column(name="is_rented")
+    @Column(name = "is_rented")
     private boolean isRented;
-    @Column(name="is_reserved")
+    @Column(name = "is_reserved")
     private boolean isReserved;
 }

@@ -1,13 +1,11 @@
 package com.endava.springrestapi.controller;
 
-import com.endava.springrestapi.exception.ResourceNotFoundException;
 import com.endava.springrestapi.model.User;
 import com.endava.springrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -18,7 +16,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getAllUsers() {
-        return userService.getAll();
+       return userService.getAll();
     }
 
     @RequestMapping(value = ":id={id}", method = RequestMethod.GET)
