@@ -16,7 +16,7 @@ public class BookController {
     private BookService bookService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Book> getAllUsers() {
+    public List<Book> getAll() {
         return bookService.getAll();
     }
 

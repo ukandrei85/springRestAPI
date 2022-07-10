@@ -34,8 +34,8 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User userDetails) {
        return  userService.update(id, userDetails);
     }
-    @RequestMapping(value = ":id={id}",method = RequestMethod.DELETE)
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id ){
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<HttpStatus> deleteUser(@RequestParam("id") int id ){
         return userService.delete(id);
     }
 
