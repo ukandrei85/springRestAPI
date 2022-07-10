@@ -31,8 +31,12 @@ public class User {
     private String userAccountPassword;
     @Column(name = "user_account_email", nullable = false)
     private String userAccountEmail;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
     List<UserBookList> userBookLists;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    List<Rental> rental;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    List<BookReservation>  bookReservations;
 
 
 

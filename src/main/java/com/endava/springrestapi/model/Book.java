@@ -31,4 +31,8 @@ public class Book {
     private boolean isReserved;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "book")
     List<UserBookList> userBookLists;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    List<Rental> rental;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    List<BookReservation>  bookReservations;
 }

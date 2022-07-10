@@ -6,19 +6,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user_books_list")
-public class UserBookList {
+@Table(name = "rental")
+public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userBookId;
-
+    private int rentalId;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -26,9 +25,8 @@ public class UserBookList {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
-
-    public UserBookList(User user, Book book) {
-        this.user = user;
-        this.book = book;
-    }
+    @Column(name = "start_period")
+    private LocalDate startPeriod;
+    @Column(name = "end_period")
+    private LocalDate endPeriod;
 }
