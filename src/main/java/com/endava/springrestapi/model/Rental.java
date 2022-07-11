@@ -1,9 +1,11 @@
 package com.endava.springrestapi.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -29,4 +31,11 @@ public class Rental {
     private LocalDate startPeriod;
     @Column(name = "end_period")
     private LocalDate endPeriod;
+
+    public Rental(User user, Book book, LocalDate startPeriod, LocalDate endPeriod) {
+        this.user = user;
+        this.book = book;
+        this.startPeriod = startPeriod;
+        this.endPeriod = endPeriod;
+    }
 }

@@ -1,6 +1,8 @@
 package com.endava.springrestapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,10 +34,13 @@ public class User {
     @Column(name = "user_account_email", nullable = false)
     private String userAccountEmail;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    @JsonIgnore
     List<UserBookList> userBookLists;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    @JsonIgnore
     List<Rental> rental;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    @JsonIgnore
     List<BookReservation>  bookReservations;
 
 

@@ -3,6 +3,7 @@ package com.endava.springrestapi.service;
 import com.endava.springrestapi.exception.ResourceNotFoundException;
 import com.endava.springrestapi.model.User;
 import com.endava.springrestapi.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,7 +14,8 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final  UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {

@@ -13,8 +13,12 @@ import java.util.List;
 @Service
 public class BookService {
 
-    @Autowired
-    private BookRepository bookRepository;
+
+    private final BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public Book create(Book book) {
         return bookRepository.save(book);
@@ -47,6 +51,9 @@ public class BookService {
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not exist with id=" + id));
         bookRepository.delete(book);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    public List<Book> getAllAbleToRent() {
+        return bookRepository.findByIsRented();
     }
 
 }

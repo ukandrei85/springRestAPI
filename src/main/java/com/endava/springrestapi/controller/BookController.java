@@ -40,4 +40,8 @@ public class BookController {
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
         return bookService.delete(id);
     }
+    @RequestMapping(value = "ableToRent",method = RequestMethod.GET)
+    public List<Book> getAllAbleToRent() {
+        return bookService.getAllAbleToRent();
+    }
 }
