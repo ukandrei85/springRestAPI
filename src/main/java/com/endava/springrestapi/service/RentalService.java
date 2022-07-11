@@ -26,16 +26,13 @@ public class RentalService {
         this.bookRepository = bookRepository;
     }
 
-    public ResponseEntity<HttpStatus> create(int userId, int bookId, LocalDate startTime, LocalDate endTime) {
-        if(bookRepository.getReferenceById(bookId).getRental().equals(false)){
+    public Rental create(int userId, int bookId, LocalDate startTime, LocalDate endTime) {
             Rental rental = new Rental(
                     userRepository.getReferenceById(userId),
                     bookRepository.getReferenceById(bookId), startTime, endTime
-            );
-            rentalRepository.save(rental);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-       else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+           );
+            return rentalRepository.save(rental);
+
     }
 
     public List<Rental> getAll() {
@@ -53,6 +50,9 @@ public class RentalService {
                 new ResourceNotFoundException("Rented Book not exist with id=" + id));
         rentalRepository.delete(rental);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    public List<Rental> findRentedBooks(int id) {
+        return rentalRepository.findBooksReturnToOwnerById(id);
     }
 
 }

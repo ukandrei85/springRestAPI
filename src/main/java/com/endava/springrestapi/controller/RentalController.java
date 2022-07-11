@@ -1,7 +1,6 @@
 package com.endava.springrestapi.controller;
 
 import com.endava.springrestapi.model.Rental;
-import com.endava.springrestapi.model.UserBookList;
 import com.endava.springrestapi.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,5 +37,9 @@ public class RentalController {
     @RequestMapping(value = ":id={id}", method = RequestMethod.DELETE)
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
         return rentalService.delete(id);
+    }
+    @RequestMapping(value = "/toReturn",method = RequestMethod.GET)
+    public List<Rental> getAllRentedBooks (@RequestParam("userId") int id) {
+        return rentalService.findRentedBooks(id);
     }
 }
