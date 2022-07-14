@@ -1,9 +1,8 @@
 package com.endava.springrestapi.service;
 
 import com.endava.springrestapi.exception.ResourceNotFoundException;
-import com.endava.springrestapi.model.Book;
+import com.endava.springrestapi.data.entities.Book;
 import com.endava.springrestapi.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Service
 public class BookService {
-
 
     private final BookRepository bookRepository;
 
@@ -52,6 +50,7 @@ public class BookService {
         bookRepository.delete(book);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     public List<Book> getAllAbleToRent() {
         return bookRepository.findByIsRented();
     }

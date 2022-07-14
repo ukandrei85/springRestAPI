@@ -1,4 +1,4 @@
-package com.endava.springrestapi.model;
+package com.endava.springrestapi.data.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "books")
-@JsonIgnoreProperties(value={ "userBookLists" })
+@JsonIgnoreProperties(value = {"userBookLists"})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,19 +25,19 @@ public class Book {
     private String title;
     @Column(name = "book_isbn", nullable = false)
     private long isbn;
-    @Column(name = "book_owner",unique = true, nullable = false)
+    @Column(name = "book_owner", unique = true, nullable = false)
     private String owner;
     @Column(name = "is_rented")
     private boolean isRented;
     @Column(name = "is_reserved")
     private boolean isReserved;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "book")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
     @JsonIgnore
     List<UserBookList> userBookLists;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     List<Rental> rental;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
-    List<BookReservation>  bookReservations;
+    List<BookReservation> bookReservations;
 }

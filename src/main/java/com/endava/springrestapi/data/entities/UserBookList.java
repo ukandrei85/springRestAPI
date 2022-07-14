@@ -1,4 +1,4 @@
-package com.endava.springrestapi.model;
+package com.endava.springrestapi.data.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,18 +6,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "books_reservation")
-public class BookReservation {
+@Table(name = "user_books_list")
+public class UserBookList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bookReservationId;
+    private int userBookId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,9 +26,8 @@ public class BookReservation {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @Column(name = "start_period")
-    private LocalDate startDate; //startDate
-
-    @Column(name = "end_period")
-    private LocalDate endDate; //endDate
+    public UserBookList(User user, Book book) {
+        this.user = user;
+        this.book = book;
+    }
 }

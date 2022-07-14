@@ -1,11 +1,10 @@
 package com.endava.springrestapi.service;
 
 import com.endava.springrestapi.exception.ResourceNotFoundException;
-import com.endava.springrestapi.model.Rental;
+import com.endava.springrestapi.data.entities.Rental;
 import com.endava.springrestapi.repository.BookRepository;
 import com.endava.springrestapi.repository.RentalRepository;
 import com.endava.springrestapi.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,11 +26,11 @@ public class RentalService {
     }
 
     public Rental create(int userId, int bookId, LocalDate startTime, LocalDate endTime) {
-            Rental rental = new Rental(
-                    userRepository.getReferenceById(userId),
-                    bookRepository.getReferenceById(bookId), startTime, endTime
-           );
-            return rentalRepository.save(rental);
+        Rental rental = new Rental(
+                userRepository.getReferenceById(userId),
+                bookRepository.getReferenceById(bookId), startTime, endTime
+        );
+        return rentalRepository.save(rental);
 
     }
 
@@ -51,6 +50,7 @@ public class RentalService {
         rentalRepository.delete(rental);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     public List<Rental> findRentedBooks(int id) {
         return rentalRepository.findBooksReturnToOwnerById(id);
     }

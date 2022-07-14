@@ -1,6 +1,6 @@
 package com.endava.springrestapi.controller;
 
-import com.endava.springrestapi.model.Rental;
+import com.endava.springrestapi.data.entities.Rental;
 import com.endava.springrestapi.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

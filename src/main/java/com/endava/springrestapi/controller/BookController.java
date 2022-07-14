@@ -1,6 +1,6 @@
 package com.endava.springrestapi.controller;
 
-import com.endava.springrestapi.model.Book;
+import com.endava.springrestapi.data.entities.Book;
 import com.endava.springrestapi.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +40,8 @@ public class BookController {
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
         return bookService.delete(id);
     }
-    @RequestMapping(value = "ableToRent",method = RequestMethod.GET)
+
+    @RequestMapping(value = "ableToRent", method = RequestMethod.GET)
     public List<Book> getAllAbleToRent() {
         return bookService.getAllAbleToRent();
     }

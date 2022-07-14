@@ -1,9 +1,7 @@
 package com.endava.springrestapi.service;
 
 import com.endava.springrestapi.exception.ResourceNotFoundException;
-import com.endava.springrestapi.model.Book;
-import com.endava.springrestapi.model.User;
-import com.endava.springrestapi.model.UserBookList;
+import com.endava.springrestapi.data.entities.UserBookList;
 import com.endava.springrestapi.repository.BookRepository;
 import com.endava.springrestapi.repository.UserBooksRepository;
 import com.endava.springrestapi.repository.UserRepository;
@@ -23,11 +21,12 @@ public class UserBooksListService {
     @Autowired
     private BookRepository bookRepository;
 
-    public UserBookList create(int userId, int bookId){
-        UserBookList userBookList=new UserBookList(userRepository.getReferenceById(userId),
+    public UserBookList create(int userId, int bookId) {
+        UserBookList userBookList = new UserBookList(userRepository.getReferenceById(userId),
                 bookRepository.getReferenceById(bookId));
         return userBooksRepository.save(userBookList);
     }
+
     public List<UserBookList> getAll() {
         return userBooksRepository.findAll();
     }
@@ -37,6 +36,7 @@ public class UserBooksListService {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not exist with id=" + id));
         return ResponseEntity.ok(userBookList);
     }
+
     public ResponseEntity<HttpStatus> delete(int id) {
         UserBookList userBookList = userBooksRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not exist with id=" + id));
