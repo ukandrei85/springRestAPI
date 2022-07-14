@@ -1,7 +1,11 @@
 package com.endava.springrestapi.controller;
 
+import com.endava.springrestapi.data.api.UserBookListDto;
+import com.endava.springrestapi.data.api.UserDto;
 import com.endava.springrestapi.data.entities.UserBookList;
+import com.endava.springrestapi.data.response.MessageResponse;
 import com.endava.springrestapi.service.UserBooksListService;
+import com.endava.springrestapi.service.UserBooksListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,23 +18,29 @@ import java.util.List;
 public class UserBookListController {
     @Autowired
     private UserBooksListService userBooksListService;
-
-    @RequestMapping(method = RequestMethod.POST)
-    public void create(@RequestParam("userId") int userId,@RequestParam("bookId") int bookId) {
-         userBooksListService.create(userId,bookId);
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<MessageResponse> adduserBooksList(@RequestBody UserBookListDto user) {
+        MessageResponse message = userBooksListService.createUserBookList(user);
+        return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
-    @RequestMapping(method = RequestMethod.GET)
-    public List<UserBookList> getAll() {
-        return userBooksListService.getAll();
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<List<UserBookListDto>> getAllUserBookList() {
+        List<UserBookListDto> userBookListDto = userBooksListService.getAllUserBookList();
+        return new ResponseEntity<>(userBookListDto, HttpStatus.OK);
     }
-
-    @RequestMapping(value = ":id={id}", method = RequestMethod.GET)
-    public ResponseEntity<UserBookList> getById(@PathVariable int id) {
-        return userBooksListService.findById(id);
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    public ResponseEntity<UserBookListDto> getUserById(@PathVariable("id") Integer id) {
+        UserBookListDto userBookListDto = userBooksListService.getASingleUserBookList(id);
+        return new ResponseEntity<>(userBookListDto, HttpStatus.OK);
     }
-
-    @RequestMapping(value = ":id={id}", method = RequestMethod.DELETE)
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
-        return userBooksListService.delete(id);
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<MessageResponse> updateUserBookList(@PathVariable Integer id, @RequestBody UserBookListDto userBookListDto) {
+        MessageResponse message =userBooksListService.updateUserBookList(id,userBookListDto);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<MessageResponse> delete(@PathVariable("id") Integer id) {
+        MessageResponse message = userBooksListService.deleteUserBookList(id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

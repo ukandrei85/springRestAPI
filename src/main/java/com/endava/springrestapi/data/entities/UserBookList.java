@@ -1,16 +1,11 @@
 package com.endava.springrestapi.data.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
+@Data
 @Entity
 @Table(name = "user_books_list")
 public class UserBookList {
@@ -26,8 +21,5 @@ public class UserBookList {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public UserBookList(User user, Book book) {
-        this.user = user;
-        this.book = book;
-    }
+
 }

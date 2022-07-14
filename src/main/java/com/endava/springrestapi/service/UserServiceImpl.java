@@ -28,7 +28,8 @@ public class UserServiceImpl implements  UserService {
 
     @Override
     public MessageResponse  updateUser(Integer userId, UserDto userApi) {
-        User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("Not found user with id:"+userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new ResourceNotFoundException("Not found user with id:"+userId));
             user.setFirstName(userApi.getFirstName());
             user.setLastName(userApi.getLastName());
             user.setCity(userApi.getCity());

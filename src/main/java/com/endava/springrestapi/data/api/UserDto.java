@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
-public class UserDto { //shift f6
+public class UserDto {
 
     @Pattern(regexp = "([a-zA-Z',.-]+( [a-zA-Z',.-]+)*){2,30}",message = "The first name must contain only alpha characters and 2-30 characters")
     private String firstName;

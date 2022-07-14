@@ -1,7 +1,6 @@
 package com.endava.springrestapi.service;
 
 import com.endava.springrestapi.data.api.UserDto;
-import com.endava.springrestapi.data.entities.User;
 import com.endava.springrestapi.data.response.MessageResponse;
 
 import java.util.List;

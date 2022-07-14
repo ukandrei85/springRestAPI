@@ -1,28 +1,28 @@
 package com.endava.springrestapi.data.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Entity
 @Table(name = "authentications")
 public class Authentication {
     @Id
-    private int user_id;
+    @Column(name = "user_id")
+    @Positive( message = "Id should not be less than 1")
+    @Max(value = 2147483647, message = "Id should not be greater than 2147483647")
+    private Integer userId;
     @Column(name = "password")
+    @Size(min = 6, max = 30, message
+            = "Password must be between 6 and 30 characters")
     private String password;
     @OneToOne(mappedBy = "authentication")
     private User user;
 
-    public Authentication(int user_id, String password) {
-        this.user_id = user_id;
-        this.password = password;
-    }
+
 }
