@@ -42,5 +42,5 @@ public class Book {
     @OneToMany( mappedBy = "user")
     private List<Rental> rental;
     @OneToMany( mappedBy = "user")
-    private List<BookReservation> bookReservations;
+    private List<Reservation> bookReservations;
 }

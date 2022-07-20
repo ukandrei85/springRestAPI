@@ -27,8 +27,6 @@ public class RentalReseter {
                     b.setEndRentPeriod(null);
                     b.setIsRented(false);
                     bookRepository.save(b);
-                    logger.info("Book with id {} is free", b.getId());
                 });
-
     }
 }

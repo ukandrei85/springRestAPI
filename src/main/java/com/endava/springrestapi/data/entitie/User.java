@@ -47,7 +47,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Rental> rental;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private  List<BookReservation> bookReservations;
+    private  List<Reservation> bookReservations;
 
 
 }

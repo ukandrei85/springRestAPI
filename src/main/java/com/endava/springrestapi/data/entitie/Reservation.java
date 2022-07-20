@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "books_reservation")
-public class BookReservation {
+public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookReservationId;
@@ -30,6 +30,11 @@ public class BookReservation {
     @Column(name = "start_period")
     private LocalDate startDate;
 
+    @Column(name = "period")
+    private ReservationPeriod period;
+
     @Column(name = "end_period")
     private LocalDate endDate;
+
+
 }
