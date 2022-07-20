@@ -1,4 +1,4 @@
-package com.endava.springrestapi.data.entities;
+package com.endava.springrestapi.data.entitie;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +13,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "rental")
-public class Rental {
+@Table(name = "books_reservation")
+public class BookReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int rentalId;
+    private int bookReservationId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -25,15 +26,10 @@ public class Rental {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
-    @Column(name = "start_period")
-    private LocalDate startPeriod;
-    @Column(name = "end_period")
-    private LocalDate endPeriod;
 
-    public Rental(User user, Book book, LocalDate startPeriod, LocalDate endPeriod) {
-        this.user = user;
-        this.book = book;
-        this.startPeriod = startPeriod;
-        this.endPeriod = endPeriod;
-    }
+    @Column(name = "start_period")
+    private LocalDate startDate;
+
+    @Column(name = "end_period")
+    private LocalDate endDate;
 }

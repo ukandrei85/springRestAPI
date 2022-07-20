@@ -1,45 +1,44 @@
 package com.endava.springrestapi.controller;
 
-import com.endava.springrestapi.data.entities.Rental;
+import com.endava.springrestapi.data.api.RentalDto;
+import com.endava.springrestapi.data.response.MessageResponse;
 import com.endava.springrestapi.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/rental")
 public class RentalController {
     @Autowired
-  private  RentalService rentalService;
+  private RentalService rentalService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void create(@RequestParam("userId") int userId,
-                       @RequestParam("bookId") int bookId,
-                       @RequestParam("startDate") @DateTimeFormat(pattern="dd-MM-yyyy") LocalDate startDate,
-                       @DateTimeFormat(pattern="dd-MM-yyyy") @RequestParam("endDate") LocalDate endDate) {
-        rentalService.create(userId,bookId,startDate,endDate);
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<MessageResponse> addRental(@RequestBody RentalDto rentalDto) {
+        MessageResponse message =rentalService.createRental(rentalDto);
+        return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Rental> getAll() {
-        return rentalService.getAll();
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<List<RentalDto>> getAllRental() {
+        List<RentalDto> rentalDto = rentalService.getAllRental();
+        return new ResponseEntity<>(rentalDto, HttpStatus.OK);
     }
-
-    @RequestMapping(value = ":id={id}", method = RequestMethod.GET)
-    public ResponseEntity<Rental> getById(@PathVariable int id) {
-        return rentalService.findById(id);
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    public ResponseEntity<RentalDto> getRentalById(@PathVariable("id") Integer id) {
+        RentalDto rentalDto = rentalService.getASingleRental(id);
+        return new ResponseEntity<>(rentalDto, HttpStatus.OK);
     }
-
-    @RequestMapping(value = ":id={id}", method = RequestMethod.DELETE)
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
-        return rentalService.delete(id);
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<MessageResponse> updateRental(@PathVariable Integer id, @RequestBody RentalDto rentalDto) {
+        MessageResponse message =rentalService.updateRental(id,rentalDto);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    @RequestMapping(value = "/toReturn",method = RequestMethod.GET)
-    public List<Rental> getAllRentedBooks (@RequestParam("userId") int id) {
-        return rentalService.findRentedBooks(id);
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<MessageResponse> delete(@PathVariable("id") Integer id) {
+        MessageResponse message = rentalService.deleteRental(id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

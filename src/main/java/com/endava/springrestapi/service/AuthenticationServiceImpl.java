@@ -1,7 +1,7 @@
 package com.endava.springrestapi.service;
 
 import com.endava.springrestapi.data.api.AuthenticationDto;
-import com.endava.springrestapi.data.entities.Authentication;
+import com.endava.springrestapi.data.entitie.Authentication;
 import com.endava.springrestapi.data.response.MessageResponse;
 import com.endava.springrestapi.repository.AuthenticationRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

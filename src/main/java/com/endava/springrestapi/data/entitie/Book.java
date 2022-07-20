@@ -1,4 +1,4 @@
-package com.endava.springrestapi.data.entities;
+package com.endava.springrestapi.data.entitie;
 
 
 
@@ -6,8 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -29,20 +29,18 @@ public class Book {
     @Min(value = 1000000000000L, message = "ISBN should not be less than 1000000000000")
     @Max(value = 9999999999999L, message = "ISBN should not be greater than 1999999999999")
     private Long isbn;
-    @Column(name = "user_id")
-    @Positive( message = "Id should not be less than 1")
-    @Max(value = 2147483647, message = "Id should not be greater than 2147483647")
-    private String userId;
     @Column(name = "is_rented",columnDefinition = "boolean default false")
     private Boolean isRented;
     @Column(name = "is_reserved",columnDefinition = "boolean default false")
     private Boolean isReserved;
-    @OneToOne(mappedBy = "book")
-    private User user;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
-    List<UserBookList> userBookLists;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    List<Rental> rental;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    List<BookReservation> bookReservations;
+    @Column(name = "end_rent_period")
+    private LocalDate endRentPeriod;
+    @ManyToOne(optional=false)
+    private User owner;
+    @OneToMany( mappedBy = "user")
+    private List<UserBookList> userBookLists;
+    @OneToMany( mappedBy = "user")
+    private List<Rental> rental;
+    @OneToMany( mappedBy = "user")
+    private List<BookReservation> bookReservations;
 }

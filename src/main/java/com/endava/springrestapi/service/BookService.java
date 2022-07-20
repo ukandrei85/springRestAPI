@@ -7,7 +7,7 @@ import com.endava.springrestapi.data.response.MessageResponse;
 import java.util.List;
 
 public interface BookService {
-    MessageResponse createBook(BookDto bookDto);
+    MessageResponse createBook(Integer userId,BookDto bookDto);
     MessageResponse  updateBook(Integer bookId, BookDto bookDto);
     MessageResponse deleteBook(Integer bookId);
     BookDto getASingleBook(Integer bookId);

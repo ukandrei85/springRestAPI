@@ -1,4 +1,4 @@
-package com.endava.springrestapi.data.entities;
+package com.endava.springrestapi.data.entitie;
 
 
 import lombok.*;
@@ -16,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer id;
     @Column(name = "first_name")
     @Size(min = 3, max = 30, message
             = "First name must be between 3 and 30 characters")
@@ -36,19 +36,18 @@ public class User {
     @Column(name = "account_email",unique = true)
     @Email(message = "Should have email format")
     private String accountEmail;
-
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private Authentication authentication;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private Book book;
+    @OneToMany(mappedBy = "owner",
+            cascade = CascadeType.ALL)
+    private List <Book> booksList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    List<UserBookList> userBookLists;
+    private  List<UserBookList> userBookLists;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    List<Rental> rental;
+    private List<Rental> rental;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    List<BookReservation> bookReservations;
+    private  List<BookReservation> bookReservations;
 
 
 }

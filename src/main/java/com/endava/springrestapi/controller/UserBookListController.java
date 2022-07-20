@@ -1,11 +1,8 @@
 package com.endava.springrestapi.controller;
 
 import com.endava.springrestapi.data.api.UserBookListDto;
-import com.endava.springrestapi.data.api.UserDto;
-import com.endava.springrestapi.data.entities.UserBookList;
 import com.endava.springrestapi.data.response.MessageResponse;
 import com.endava.springrestapi.service.UserBooksListService;
-import com.endava.springrestapi.service.UserBooksListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

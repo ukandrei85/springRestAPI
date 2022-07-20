@@ -1,6 +1,6 @@
 package com.endava.springrestapi.service;
 
-import com.endava.springrestapi.data.entities.ReservationPeriod;
+import com.endava.springrestapi.data.entitie.ReservationPeriod;
 import com.endava.springrestapi.repository.BookReservationRepository;
 import org.springframework.stereotype.Service;
 

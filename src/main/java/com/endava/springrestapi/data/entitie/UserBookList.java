@@ -1,4 +1,4 @@
-package com.endava.springrestapi.data.entities;
+package com.endava.springrestapi.data.entitie;
 
 import lombok.*;
 
@@ -21,5 +21,12 @@ public class UserBookList {
     @JoinColumn(name = "book_id")
     private Book book;
 
+    public UserBookList(User user, Book book) {
+        this.user = user;
+        this.book = book;
+    }
 
+    public UserBookList() {
+
+    }
 }

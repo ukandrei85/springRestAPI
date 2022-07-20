@@ -1,4 +1,4 @@
-package com.endava.springrestapi.data.entities;
+package com.endava.springrestapi.data.entitie;
 
 public enum ReservationPeriod {
     ONE_WEEK(1),

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 
 
 @Data
@@ -16,7 +17,8 @@ public class BookDto {
     @Pattern(regexp = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$",message = "Should have ISBN format")
     private Long isbn;
     @Pattern(regexp = "^[0-9]{10}$")
-    private String userId;
+    private Integer userId;
     private Boolean isRented;
     private Boolean isReserved;
+    private LocalDate endRentPeriod;
 }

@@ -1,6 +1,6 @@
 package com.endava.springrestapi.repository;
 
-import com.endava.springrestapi.data.entities.Book;
+import com.endava.springrestapi.data.entitie.Book;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 

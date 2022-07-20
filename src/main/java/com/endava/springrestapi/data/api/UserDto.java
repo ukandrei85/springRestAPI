@@ -1,6 +1,6 @@
 package com.endava.springrestapi.data.api;
 
-import com.endava.springrestapi.data.entities.Authentication;
+import com.endava.springrestapi.data.entitie.Authentication;
 import lombok.*;
 
 import javax.validation.constraints.*;

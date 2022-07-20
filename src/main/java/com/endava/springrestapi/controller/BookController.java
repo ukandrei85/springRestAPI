@@ -16,9 +16,9 @@ public class BookController {
     @Autowired
     private BookServiceImpl bookService;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<MessageResponse> addBook(@RequestBody BookDto bookDto) {
-        MessageResponse message = bookService.createBook(bookDto);
+    @RequestMapping(value = "/add/{userId}", method = RequestMethod.POST)
+    public ResponseEntity<MessageResponse> addBook(@RequestBody BookDto bookDto,@PathVariable int userId) {
+        MessageResponse message = bookService.createBook(userId,bookDto);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 
