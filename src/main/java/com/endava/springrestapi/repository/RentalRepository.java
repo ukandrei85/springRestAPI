@@ -5,11 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RentalRepository extends JpaRepositoryImplementation<Rental,Integer> {
-    @Query("select r from Rental r where r.user.id= :id and r.endPeriod>= current_date ")
-    List<Rental>  findBooksReturnToOwnerByUserId(Integer id);
+//    @Query("select r from Rental r where r.user.id= :id and r.endPeriod>= current_date ")
+//    List<Rental>  findBooksReturnToOwnerByUserId(Integer id);
+@Query(" SELECT r FROM Rental r WHERE r.book.isRented=true and r.book.owner.id=:id")
+List<Rental>  findBooksReturnToOwnerByUserId(Integer id);
 
-    @Query("select r from Rental r where r.endPeriod >= current_date ")
-    List<Rental> findActiveRents();
 }

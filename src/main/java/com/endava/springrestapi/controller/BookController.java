@@ -45,5 +45,14 @@ public class BookController {
         MessageResponse deleteBook = bookService.deleteBook(id);
         return new ResponseEntity<>(deleteBook, HttpStatus.OK);
     }
-
+    @RequestMapping(value = "/not_rented", method = RequestMethod.GET)
+    public ResponseEntity<List<BookDto>> getAllBooksAbleToRent() {
+        List<BookDto> bookList = bookService.getAllBooksAbleToRent();
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
+   @RequestMapping(value = "/byTitleOrAuthor/{search}", method = RequestMethod.GET)
+   public ResponseEntity<List<BookDto>> findBooksByTitleOrAuthor(@PathVariable("search") String search) {
+       List<BookDto> bookList = bookService.getBooksByTitleOrAuthor(search);
+       return new ResponseEntity<>(bookList, HttpStatus.OK);
+    }
 }

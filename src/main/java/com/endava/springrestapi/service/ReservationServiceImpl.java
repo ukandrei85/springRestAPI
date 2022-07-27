@@ -79,17 +79,12 @@ public class ReservationServiceImpl implements ReservationService{
         return reservationRepository.findAll().stream().map(this::mapEntityToApi).toList();
     }
     public boolean checkToReserve(ReservationDto reservationDto){
-   //     int count=0;
+
      return reservationRepository.findReservationByBookId(reservationDto.getBookId()).stream()
                .noneMatch(b->(reservationDto.getStartDate().isAfter(b.getStartDate()))&&(reservationDto.getEndDate().isBefore(b.getEndDate())));
-//        for (  Reservation reservation:reservationRepository.findReservationByBookId(reservationDto.getBookId())) {
-//            if(!(reservationDto.getStartDate().isAfter(reservation.getStartDate()))
-//                    &&(!(reservationDto.getEndDate().isBefore(reservation.getEndDate())))) {
-//                count++;
-//            }
-//        }
-//        return (count > 0)? false : true;
+
     }
+
 
     public ReservationDto mapEntityToApi(Reservation reservation) {
         return new ReservationDto(reservation.getUser().getId(),reservation.getBook().getId(),

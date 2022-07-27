@@ -1,5 +1,6 @@
 package com.endava.springrestapi.service;
 
+import com.endava.springrestapi.data.api.BookToReturnDto;
 import com.endava.springrestapi.data.api.RentalDto;
 import com.endava.springrestapi.data.entitie.Book;
 import com.endava.springrestapi.data.entitie.Rental;
@@ -12,6 +13,7 @@ import com.endava.springrestapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +24,8 @@ public class RentalServiceImpl implements RentalService {
     private UserRepository userRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private BookToReturnDto bookToReturnDto;
 
 
     @Override
@@ -81,6 +85,21 @@ public class RentalServiceImpl implements RentalService {
     public List<RentalDto> getAllRental() {
         return rentalRepository.findAll().stream().map(this::mapEntityToApi).toList();
     }
+   public List<BookToReturnDto> findBooksReturnToOwnerByUserId(Integer id){
+       List<BookToReturnDto>list= new ArrayList<>();
+       rentalRepository.findBooksReturnToOwnerByUserId(id).stream().forEach(r->{
+            BookToReturnDto book=new BookToReturnDto();
+            book.setUserId(id);
+            book.setAuthor(r.getBook().getAuthor());
+            book.setTitle(r.getBook().getTitle());
+            book.setIsRented(r.getBook().getIsRented());
+            book.setEndRentPeriod(r.getEndPeriod());
+            book.setFirstName(r.getUser().getFirstName());
+            book.setLastName(r.getUser().getLastName());
+            list.add(book);
+        });
+        return list;
+   }
 
     public RentalDto mapEntityToApi(Rental rental) {
         return new RentalDto(rental.getUser().getId(), rental.getBook().getId(), rental.getStartPeriod(), rental.getEndPeriod());

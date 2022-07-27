@@ -72,8 +72,12 @@ public class BookServiceImpl implements BookService {
         return new BookDto(book.getTitle(),book.getAuthor(),book.getIsbn(),book.getOwner().getId(),book.getIsRented(),book.getIsReserved(),book.getEndRentPeriod());
     }
 
-
-
+    public List<BookDto> getAllBooksAbleToRent(){
+        return bookRepository.findByIsRented().stream().map(this::mapBookEntityToApi).toList();
+    }
+   public List<BookDto> getBooksByTitleOrAuthor(String search){
+        return bookRepository.findBooksByTitleOrAuthor(search).stream().map(this::mapBookEntityToApi).toList();
+    }
 
 
 }
