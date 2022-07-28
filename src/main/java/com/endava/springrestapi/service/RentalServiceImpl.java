@@ -1,6 +1,6 @@
 package com.endava.springrestapi.service;
 
-import com.endava.springrestapi.data.api.BookToReturnDto;
+import com.endava.springrestapi.data.api.RentedBookDto;
 import com.endava.springrestapi.data.api.RentalDto;
 import com.endava.springrestapi.data.entitie.Book;
 import com.endava.springrestapi.data.entitie.Rental;
@@ -12,8 +12,8 @@ import com.endava.springrestapi.repository.RentalRepository;
 import com.endava.springrestapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,10 +25,11 @@ public class RentalServiceImpl implements RentalService {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private BookToReturnDto bookToReturnDto;
+    private RentedBookDto bookToReturnDto;
 
 
     @Override
+    @Transactional
     public MessageResponse createRental(RentalDto rentalDto) throws ResourceNotFoundException {
 
         Book book = bookRepository.findById(rentalDto.getBookId())
@@ -50,6 +51,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional
     public MessageResponse updateRental(Integer id, RentalDto rentalDto) throws ResourceNotFoundException {
         Rental updateRental = rentalRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found  Rental with id" + id));
@@ -66,6 +68,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional
     public MessageResponse deleteRental(Integer id) throws ResourceNotFoundException {
         Rental rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found Rental with id:" + id));
@@ -85,24 +88,22 @@ public class RentalServiceImpl implements RentalService {
     public List<RentalDto> getAllRental() {
         return rentalRepository.findAll().stream().map(this::mapEntityToApi).toList();
     }
-   public List<BookToReturnDto> findBooksReturnToOwnerByUserId(Integer id){
-       List<BookToReturnDto>list= new ArrayList<>();
-       rentalRepository.findBooksReturnToOwnerByUserId(id).stream().forEach(r->{
-            BookToReturnDto book=new BookToReturnDto();
-            book.setUserId(id);
-            book.setAuthor(r.getBook().getAuthor());
-            book.setTitle(r.getBook().getTitle());
-            book.setIsRented(r.getBook().getIsRented());
-            book.setEndRentPeriod(r.getEndPeriod());
-            book.setFirstName(r.getUser().getFirstName());
-            book.setLastName(r.getUser().getLastName());
-            list.add(book);
-        });
-        return list;
+   public List<RentedBookDto> findRentedBooksByOwnerId(Integer id){
+       return rentalRepository.findRentedBooksByOwnerId(id).stream().map(this::mapEntityToBookReturnDto).toList();
    }
+   public List<RentedBookDto> getBooksRentedByUserId(Integer userId){
+        return rentalRepository.findBooksRentedByUserId(userId).stream().map(this::mapEntityToBookReturnDto).toList();
+
+   }
+
 
     public RentalDto mapEntityToApi(Rental rental) {
         return new RentalDto(rental.getUser().getId(), rental.getBook().getId(), rental.getStartPeriod(), rental.getEndPeriod());
+    }
+    public RentedBookDto mapEntityToBookReturnDto(Rental rental) {
+        return new RentedBookDto(rental.getUser().getId(),rental.getBook().getTitle(),rental.getBook().getAuthor()
+                ,rental.getBook().getIsRented(),rental.getEndPeriod(),rental.getBook().getOwner().getFirstName()
+                ,rental.getBook().getOwner().getLastName());
     }
 
 }

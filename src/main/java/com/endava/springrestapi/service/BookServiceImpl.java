@@ -9,6 +9,7 @@ import com.endava.springrestapi.repository.BookRepository;
 import com.endava.springrestapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +25,7 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
+    @Transactional
     public MessageResponse createBook(Integer userId,BookDto bookDto) {
         Book newBook=new Book();
         newBook.setOwner(userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User is not found")));
@@ -37,6 +39,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public MessageResponse updateBook(Integer bookId, BookDto bookDto) {
         Book updatedBook=bookRepository.findById(bookId).orElseThrow(()->new ResourceNotFoundException("Not found book with id:"+bookId));
         updatedBook.setTitle(bookDto.getTitle());
@@ -50,6 +53,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public MessageResponse deleteBook(Integer bookId) throws ResourceNotFoundException {
         Book deletedBook=bookRepository.findById(bookId).orElseThrow(()->new ResourceNotFoundException("Not found book with id:"+bookId));
         bookRepository.delete(deletedBook);

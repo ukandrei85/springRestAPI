@@ -7,6 +7,8 @@ import com.endava.springrestapi.exception.ResourceNotFoundException;
 import com.endava.springrestapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 
@@ -15,6 +17,7 @@ public class UserServiceImpl implements  UserService {
     @Autowired
     private UserRepository userRepository;
     @Override
+    @Transactional
     public MessageResponse createUser(UserDto userApi) {
         User user=new User();
         user.setFirstName(userApi.getFirstName());
@@ -27,19 +30,21 @@ public class UserServiceImpl implements  UserService {
     }
 
     @Override
-    public MessageResponse  updateUser(Integer userId, UserDto userApi) {
+    @Transactional
+    public MessageResponse  updateUser(Integer userId, UserDto userDto) {
         User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("Not found user with id:"+userId));
-            user.setFirstName(userApi.getFirstName());
-            user.setLastName(userApi.getLastName());
-            user.setCity(userApi.getCity());
-            user.setAccountLogin(userApi.getAccountLogin());
-            user.setAccountEmail(userApi.getAccountEmail());
+            user.setFirstName(userDto.getFirstName());
+            user.setLastName(userDto.getLastName());
+            user.setCity(userDto.getCity());
+            user.setAccountLogin(userDto.getAccountLogin());
+            user.setAccountEmail(userDto.getAccountEmail());
             userRepository.save(user);
             return  new MessageResponse("User updated successfully");
 
     }
 
     @Override
+    @Transactional
     public MessageResponse deleteUser(Integer userId) throws ResourceNotFoundException{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exist with id=" + userId));

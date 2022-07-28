@@ -7,6 +7,7 @@ import com.endava.springrestapi.repository.AuthenticationRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService{
@@ -20,6 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public MessageResponse createAuthentication(AuthenticationDto authApi) {
         String encodedPassword = this.passwordEncoder.encode(authApi.getPassword());
         Authentication auth=new Authentication();

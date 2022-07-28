@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     @Autowired
     private AuthenticationService authService;
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     public ResponseEntity<MessageResponse> addAuthentication(@RequestBody AuthenticationDto authDto) {
         MessageResponse message = authService.createAuthentication(authDto);
         return new ResponseEntity<>(message, HttpStatus.CREATED);

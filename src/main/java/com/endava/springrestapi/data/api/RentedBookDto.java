@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class BookToReturnDto {
+public class RentedBookDto {
     @Pattern(regexp = "^[0-9]{10}$")
     private Integer userId;
     @Pattern(regexp ="^[[A-Z]|[a-z]][[A-Z]|[a-z]|\\d|[_]]{3,29}$",message = "The title must contain letters and numbers between 3 and 30 characters")

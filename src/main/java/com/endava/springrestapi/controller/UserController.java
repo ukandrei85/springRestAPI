@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,34 +17,35 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<MessageResponse> addUser(@RequestBody UserDto user) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<MessageResponse> addUser(@RequestBody  UserDto user) {
+
         MessageResponse message = userService.createUser(user);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> userList = userService.getAllUser();
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Integer id) {
-        UserDto user = userService.getASingleUser(id);
+    @RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
+    public ResponseEntity<UserDto> getUserById(@PathVariable Integer user_id) {
+        UserDto user = userService.getASingleUser(user_id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<MessageResponse> updateUser(@PathVariable Integer id, @RequestBody UserDto userDetails) {
-        MessageResponse updateUser = userService.updateUser(id, userDetails);
+    @RequestMapping(value = "/{user_id}", method = RequestMethod.PATCH)
+    public ResponseEntity<MessageResponse> updateUser(@PathVariable Integer user_id, @RequestBody UserDto userDetails) {
+        MessageResponse updateUser = userService.updateUser(user_id, userDetails);
         return new ResponseEntity<>(updateUser, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<MessageResponse> delete(@PathVariable("id") Integer id) {
-        MessageResponse deleteUser = userService.deleteUser(id);
+    @RequestMapping(value = "/{user_id}", method = RequestMethod.DELETE)
+    public ResponseEntity<MessageResponse> delete(@PathVariable Integer user_id) {
+        MessageResponse deleteUser = userService.deleteUser(user_id);
         return new ResponseEntity<>(deleteUser, HttpStatus.OK);
     }
 

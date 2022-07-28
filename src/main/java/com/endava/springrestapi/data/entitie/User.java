@@ -17,11 +17,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "first_name")
+    @Column(name = "first_name",nullable = false)
     @Size(min = 3, max = 30, message
             = "First name must be between 3 and 30 characters")
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name",nullable = false)
     @Size(min = 3, max = 30, message
             = "Last name must be between 3 and 30 characters")
     private String lastName;

@@ -15,27 +15,27 @@ import java.util.List;
 public class UserBookListController {
     @Autowired
     private UserBooksListService userBooksListService;
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     public ResponseEntity<MessageResponse> adduserBooksList(@RequestBody UserBookListDto user) {
         MessageResponse message = userBooksListService.createUserBookList(user);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping( method = RequestMethod.GET)
     public ResponseEntity<List<UserBookListDto>> getAllUserBookList() {
         List<UserBookListDto> userBookListDto = userBooksListService.getAllUserBookList();
         return new ResponseEntity<>(userBookListDto, HttpStatus.OK);
     }
-    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<UserBookListDto> getUserById(@PathVariable("id") Integer id) {
         UserBookListDto userBookListDto = userBooksListService.getASingleUserBookList(id);
         return new ResponseEntity<>(userBookListDto, HttpStatus.OK);
     }
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<MessageResponse> updateUserBookList(@PathVariable Integer id, @RequestBody UserBookListDto userBookListDto) {
         MessageResponse message =userBooksListService.updateUserBookList(id,userBookListDto);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<MessageResponse> delete(@PathVariable("id") Integer id) {
         MessageResponse message = userBooksListService.deleteUserBookList(id);
         return new ResponseEntity<>(message, HttpStatus.OK);

@@ -11,6 +11,7 @@ import com.endava.springrestapi.repository.UserBooksRepository;
 import com.endava.springrestapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class UserBooksListServiceImpl implements UserBooksListService{
 
 
     @Override
+    @Transactional
     public MessageResponse createUserBookList(UserBookListDto userBookListDto) throws ResourceNotFoundException {
        User user=userRepository.findById(userBookListDto.getUserId())
                .orElseThrow(()->new ResourceNotFoundException("Not found  User with id:"+userBookListDto.getUserId()));
@@ -38,6 +40,7 @@ public class UserBooksListServiceImpl implements UserBooksListService{
     }
 
     @Override
+    @Transactional
     public MessageResponse updateUserBookList(Integer id, UserBookListDto userBookListDto) throws ResourceNotFoundException {
         UserBookList userBookList=userBooksRepository.findById(id)
                         .orElseThrow(()->new ResourceNotFoundException("Not found  UserBookList with id:"+id));
@@ -52,6 +55,7 @@ public class UserBooksListServiceImpl implements UserBooksListService{
     }
 
     @Override
+    @Transactional
     public MessageResponse deleteUserBookList(Integer id) throws ResourceNotFoundException{
         UserBookList userBookList=userBooksRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found  UserBookList with id:"+id));

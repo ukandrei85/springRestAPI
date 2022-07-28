@@ -9,6 +9,8 @@ import com.endava.springrestapi.repository.ReservationRepository;
 import com.endava.springrestapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -23,6 +25,7 @@ public class ReservationServiceImpl implements ReservationService{
 
 
     @Override
+    @Transactional
     public MessageResponse createReservation(ReservationDto reservationDto) throws ResourceNotFoundException {
    if(checkToReserve(reservationDto)){
           Book book = bookRepository.findById(reservationDto.getBookId())
@@ -43,6 +46,7 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
+    @Transactional
     public MessageResponse updateReservation(Integer id, ReservationDto reservationDto) throws ResourceNotFoundException{
         Reservation reservation=reservationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found  Reservation with id:" + id));
@@ -60,6 +64,7 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
+    @Transactional
     public MessageResponse deleteReservation(Integer id) throws ResourceNotFoundException {
         Reservation reservation=reservationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found  Reservation with id:" + id));
