@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/userBookList")
+@RequestMapping("/api/userBookList")
 public class UserBookListController {
     @Autowired
     private UserBooksListService userBooksListService;

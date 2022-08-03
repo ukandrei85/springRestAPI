@@ -1,27 +1,45 @@
 package com.endava.springrestapi.controller;
 
 import com.endava.springrestapi.data.api.UserDto;
-import com.endava.springrestapi.data.response.MessageResponse;
+import com.endava.springrestapi.data.entitie.Role;
+import com.endava.springrestapi.data.entitie.User;
 import com.endava.springrestapi.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequiredArgsConstructor
+@RequestMapping("/api/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<MessageResponse> addUser(@RequestBody  UserDto user) {
+    public ResponseEntity<UserDto> addUser(@RequestBody User user) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users").toUriString());
+        return ResponseEntity.created(uri).body(userService.createUser(user));
+    }
 
-        MessageResponse message = userService.createUser(user);
-        return new ResponseEntity<>(message, HttpStatus.CREATED);
+    @RequestMapping(value = "/role", method = RequestMethod.POST)
+    public ResponseEntity<Role> addRole(@RequestBody Role role) {
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/role").toUriString());
+        return ResponseEntity.created(uri).body(userService.saveRole(role));
+    }
+
+    @RequestMapping(value = "/role/addtouser", method = RequestMethod.POST)
+    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form) {
+        userService.addRoleToUser(form.getUsername(), form.getRoleName());
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -29,25 +47,10 @@ public class UserController {
         List<UserDto> userList = userService.getAllUser();
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> getUserById(@PathVariable Integer user_id) {
-        UserDto user = userService.getASingleUser(user_id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-
-    @RequestMapping(value = "/{user_id}", method = RequestMethod.PATCH)
-    public ResponseEntity<MessageResponse> updateUser(@PathVariable Integer user_id, @RequestBody UserDto userDetails) {
-        MessageResponse updateUser = userService.updateUser(user_id, userDetails);
-        return new ResponseEntity<>(updateUser, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/{user_id}", method = RequestMethod.DELETE)
-    public ResponseEntity<MessageResponse> delete(@PathVariable Integer user_id) {
-        MessageResponse deleteUser = userService.deleteUser(user_id);
-        return new ResponseEntity<>(deleteUser, HttpStatus.OK);
-    }
-
 }
 
+@Data
+class RoleToUserForm {
+    private String username;
+    private String roleName;
+}

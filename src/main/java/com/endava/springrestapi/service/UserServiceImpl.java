@@ -1,61 +1,85 @@
 package com.endava.springrestapi.service;
 
 import com.endava.springrestapi.data.api.UserDto;
+import com.endava.springrestapi.data.entitie.Role;
 import com.endava.springrestapi.data.entitie.User;
 import com.endava.springrestapi.data.response.MessageResponse;
 import com.endava.springrestapi.exception.ResourceNotFoundException;
+import com.endava.springrestapi.repository.RoleRepository;
 import com.endava.springrestapi.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
 @Service
-public class UserServiceImpl implements  UserService {
-    @Autowired
-    private UserRepository userRepository;
+@Slf4j
+@Transactional
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService, UserDetailsService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private  final PasswordEncoder passwordEncoder;
+
     @Override
-    @Transactional
-    public MessageResponse createUser(UserDto userApi) {
-        User user=new User();
-        user.setFirstName(userApi.getFirstName());
-        user.setLastName(userApi.getLastName());
-        user.setAccountEmail(userApi.getAccountEmail());
-        user.setAccountLogin(userApi.getAccountLogin());
-        user.setCity(userApi.getCity());
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user=userRepository.findUserByUsername(username);
+        if(user==null){
+            throw new UsernameNotFoundException("User not found");
+        }
+        Collection<SimpleGrantedAuthority> authorities=new ArrayList<>();
+        user.getRoles().forEach(role->{
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
+    }
+    @Override
+    public UserDto createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return new MessageResponse("User created successfully");
+        return mapEntityToApi(user);
     }
 
     @Override
-    @Transactional
-    public MessageResponse  updateUser(Integer userId, UserDto userDto) {
-        User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("Not found user with id:"+userId));
-            user.setFirstName(userDto.getFirstName());
-            user.setLastName(userDto.getLastName());
-            user.setCity(userDto.getCity());
-            user.setAccountLogin(userDto.getAccountLogin());
-            user.setAccountEmail(userDto.getAccountEmail());
-            userRepository.save(user);
-            return  new MessageResponse("User updated successfully");
-
+    public Role saveRole(Role role) {
+        return roleRepository.save(role);
     }
 
     @Override
-    @Transactional
-    public MessageResponse deleteUser(Integer userId) throws ResourceNotFoundException{
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not exist with id=" + userId));
+    public void addRoleToUser(String username, String roleName) {
+        User user = userRepository.findUserByUsername(username);
+        Role role = roleRepository.findByName(roleName);
+        user.getRoles().add(role);
+    }
+
+    @Override
+    public UserDto getUser(String username) {
+        User user = userRepository.findUserByUsername(username);
+        return mapEntityToApi(user);
+    }
+
+
+    @Override
+    public MessageResponse deleteUser(String username) {
+        User user = userRepository.findUserByUsername(username);
         userRepository.delete(user);
         return new MessageResponse("User deleted successfully");
     }
 
     @Override
-    public UserDto getASingleUser(Integer userId)throws ResourceNotFoundException {
-        User user= userRepository.findById(userId)
-                .orElseThrow(()->new ResourceNotFoundException("Not found user with id:"+userId));
+    public UserDto getUserById(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Not found user with id:" + userId));
         return mapEntityToApi(user);
     }
 
@@ -64,9 +88,11 @@ public class UserServiceImpl implements  UserService {
         return userRepository.findAll().stream().map(this::mapEntityToApi).toList();
     }
 
-    public UserDto mapEntityToApi(User user){
-        return new UserDto(user.getFirstName(), user.getLastName(), user.getCity(), user.getAccountLogin(), user.getAccountEmail(), null);
+    public UserDto mapEntityToApi(User user) {
+        return new UserDto(user.getFirstName(), user.getLastName(), user.getCity(), user.getUsername(), user.getAccountEmail(), user.getPassword(), user.getRoles());
     }
+
+
 
 }
 
