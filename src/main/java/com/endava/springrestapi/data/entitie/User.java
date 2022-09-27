@@ -2,6 +2,7 @@ package com.endava.springrestapi.data.entitie;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ import static javax.persistence.FetchType.EAGER;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
     @Id

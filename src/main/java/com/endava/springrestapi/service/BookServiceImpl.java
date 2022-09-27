@@ -1,7 +1,6 @@
 package com.endava.springrestapi.service;
 
 import com.endava.springrestapi.data.api.BookDto;
-import com.endava.springrestapi.data.entitie.Rental;
 import com.endava.springrestapi.data.response.MessageResponse;
 import com.endava.springrestapi.exception.ResourceNotFoundException;
 import com.endava.springrestapi.data.entitie.Book;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -77,7 +75,7 @@ public class BookServiceImpl implements BookService {
     }
 
     public List<BookDto> getAllBooksAbleToRent(){
-        return bookRepository.findByIsRented().stream().map(this::mapBookEntityToApi).toList();
+        return bookRepository.findByIsNotRented().stream().map(this::mapBookEntityToApi).toList();
     }
    public List<BookDto> getBooksByTitleOrAuthor(String search){
         return bookRepository.findBooksByTitleOrAuthor(search).stream().map(this::mapBookEntityToApi).toList();

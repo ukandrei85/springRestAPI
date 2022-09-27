@@ -10,9 +10,15 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+
 @Entity
 @Table(name = "books")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +49,14 @@ public class Book {
     private List<Rental> rental;
     @OneToMany( mappedBy = "user")
     private List<Reservation> bookReservations;
+
+    public Book(String title, String author, Long isbn, Boolean isRented, Boolean isReserved, LocalDate endRentPeriod, User owner) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.isRented = isRented;
+        this.isReserved = isReserved;
+        this.endRentPeriod = endRentPeriod;
+        this.owner = owner;
+    }
 }

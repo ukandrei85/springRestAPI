@@ -24,8 +24,7 @@ public class RentalServiceImpl implements RentalService {
     private UserRepository userRepository;
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private RentedBookDto bookToReturnDto;
+
 
 
     @Override
