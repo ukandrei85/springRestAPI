@@ -18,8 +18,7 @@ public class BookServiceImpl implements BookService {
     private  BookRepository bookRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RentalService rentalService;
+
 
 
     @Override
@@ -43,7 +42,6 @@ public class BookServiceImpl implements BookService {
         updatedBook.setTitle(bookDto.getTitle());
         updatedBook.setAuthor(bookDto.getAuthor());
         updatedBook.setIsbn(bookDto.getIsbn());
-
         updatedBook.setIsRented(bookDto.getIsRented());
         updatedBook.setIsReserved(bookDto.getIsReserved());
         bookRepository.save(updatedBook);

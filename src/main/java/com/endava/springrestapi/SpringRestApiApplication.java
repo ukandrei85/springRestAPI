@@ -7,13 +7,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
 import java.util.ArrayList;
 
 
@@ -32,17 +30,17 @@ public class SpringRestApiApplication {
     }
 
 
-//    @Bean
-//    CommandLineRunner run(UserService userService) {
-//        return args -> {
-//            userService.saveRole(new Role(null, "ROLE_USER"));
-//            userService.saveRole(new Role(null, "ROLE_ADMIN"));
-//            userService.createUser(new User(null, "Ion", "Turcanu", "Bucuresti", "ion58", "ion27@gmail.com", true, "1234567", new ArrayList<>()));
-//            userService.createUser(new User(null, "Andrei", "Boaghe", "Bucuresti", "andrei58", "andrei27@gmail.com", true, "1234567", new ArrayList<>()));
-//            userService.addRoleToUser("ion58", "ROLE_USER");
-//            userService.addRoleToUser("andrei58", "ROLE_ADMIN");
-//        };
-//    }
+    @Bean
+    CommandLineRunner run(UserService userService) {
+        return args -> {
+            userService.saveRole(new Role(null, "ROLE_USER"));
+            userService.saveRole(new Role(null, "ROLE_ADMIN"));
+            userService.createUser(new User(null, "Ion", "Turcanu", "Bucuresti", "ion58", "ion27@gmail.com", true, "1234567", new ArrayList<>()));
+            userService.createUser(new User(null, "Andrei", "Boaghe", "Bucuresti", "andrei58", "andrei27@gmail.com", true, "1234567", new ArrayList<>()));
+            userService.addRoleToUser("ion58", "ROLE_USER");
+            userService.addRoleToUser("andrei58", "ROLE_ADMIN");
+        };
+    }
 
 
 }

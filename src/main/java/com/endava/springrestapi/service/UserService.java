@@ -12,7 +12,7 @@ public interface UserService {
 
     Role saveRole(Role role);
 
-    void addRoleToUser(String username, String roleName);
+    MessageResponse addRoleToUser(String username, String roleName);
 
     UserDto getUser(String username);
 

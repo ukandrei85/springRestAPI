@@ -5,8 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 
 
-@Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@Builder
 @Table(name = "user_books_list")
 public class UserBookList {
     @Id
@@ -26,7 +30,4 @@ public class UserBookList {
         this.book = book;
     }
 
-    public UserBookList() {
-
-    }
 }

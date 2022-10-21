@@ -9,9 +9,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDto {
 
     @Pattern(regexp = "([a-zA-Z',.-]+( [a-zA-Z',.-]+)*){2,30}",message = "The first name must contain only alpha characters and 2-30 characters")

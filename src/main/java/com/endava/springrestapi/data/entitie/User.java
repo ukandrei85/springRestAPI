@@ -1,6 +1,7 @@
 package com.endava.springrestapi.data.entitie;
 
 
+import com.endava.springrestapi.data.api.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -66,5 +67,8 @@ public class User {
         this.active = active;
         this.password = password;
         this.roles = roles;
+    }
+    public UserDto mapEntityToApi() {
+        return new UserDto(this.getFirstName(), this.getLastName(), this.getCity(), this.getUsername(), this.getAccountEmail(), this.getPassword(), this.getRoles());
     }
 }

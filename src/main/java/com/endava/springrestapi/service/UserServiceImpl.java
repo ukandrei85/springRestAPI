@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -30,49 +31,35 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private  final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user=userRepository.findUserByUsername(username);
-        if(user==null){
-            throw new UsernameNotFoundException("User not found");
-        }
-        Collection<SimpleGrantedAuthority> authorities=new ArrayList<>();
-        user.getRoles().forEach(role->{
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
-    }
-    @Override
+    @Transactional
     public UserDto createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return mapEntityToApi(user);
     }
 
-    @Override
-    public Role saveRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public void addRoleToUser(String username, String roleName) {
-        User user = userRepository.findUserByUsername(username);
-        Role role = roleRepository.findByName(roleName);
-        user.getRoles().add(role);
-    }
 
     @Override
     public UserDto getUser(String username) {
         User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException("User " + username + " was not found");
+        }
         return mapEntityToApi(user);
     }
 
 
     @Override
+    @Transactional
     public MessageResponse deleteUser(String username) {
         User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException("User is not found");
+        }
         userRepository.delete(user);
         return new MessageResponse("User deleted successfully");
     }
@@ -92,6 +79,37 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new UserDto(user.getFirstName(), user.getLastName(), user.getCity(), user.getUsername(), user.getAccountEmail(), user.getPassword(), user.getRoles());
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+    }
+
+    @Override
+    @Transactional
+    public Role saveRole(Role role) {
+        return roleRepository.save(role);
+    }
+
+    @Override
+    @Transactional
+    public MessageResponse addRoleToUser(String username, String roleName) {
+        User user = userRepository.findUserByUsername(username);
+        Role role = roleRepository.findByName(roleName);
+        if (user == null||role==null) {
+            throw new ResourceNotFoundException("User or Role is not found");
+        }
+        user.getRoles().add(role);
+        return new MessageResponse("The role is added successfully");
+
+    }
 
 
 }

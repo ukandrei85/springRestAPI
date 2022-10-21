@@ -51,7 +51,7 @@ public class UserBooksListServiceImpl implements UserBooksListService{
         userBookList.setBook(book);
         userBookList.setUser(user);
         userBooksRepository.save(userBookList);
-        return new MessageResponse("UserBooksList created successfully");
+        return new MessageResponse("UserBooksList update successfully");
     }
 
     @Override
@@ -60,7 +60,7 @@ public class UserBooksListServiceImpl implements UserBooksListService{
         UserBookList userBookList=userBooksRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Not found  UserBookList with id:"+id));
         userBooksRepository.delete(userBookList);
-        return new MessageResponse("UserBooksList created successfully");
+        return new MessageResponse("UserBooksList deleted successfully");
     }
 
     @Override
